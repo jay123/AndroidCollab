@@ -1,3 +1,5 @@
 Readme
 
-Android app. to display current phone status.
+
+
+Android app. to display current phone status........
