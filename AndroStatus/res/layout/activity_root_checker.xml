@@ -9,8 +9,12 @@
     tools:context=".RootChecker" >
 
     <TextView
+        android:id="@+id/rootResultsView"
+        android:scrollbars = "vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/root_checker_result" />
 
 </RelativeLayout>
