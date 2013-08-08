@@ -62,8 +62,24 @@ public class RootChecker extends Activity {
 
 	//Checks for root and returns a description of the result	
 	public String rootCheck(){
-		String result;
-		result = runCommand("ls");
+		String result,packages;
+		boolean isSuperSUInstalled, isSuperUserInstalled;
+		
+	/*	//Get a list of packages to check if superuser or superSU apps. are installed
+		packages = runCommand("pm list packages -f");
+		
+		if(packages.contains("superuser"))
+			isSuperUserInstalled = true;
+		else
+			isSuperUserInstalled = false;
+		
+		if(packages.contains("superSU"))
+			isSuperSUInstalled = true;
+		else
+			isSuperSUInstalled = false;
+		*/
+		
+		
 		Log.d("TEST_MESSAGES",result);
 			
 		return result;
