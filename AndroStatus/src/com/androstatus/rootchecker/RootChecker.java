@@ -40,14 +40,25 @@ public class RootChecker extends Activity {
 		Process pr;
 		try {
 			pr = run.exec(cmd);
-			pr.waitFor();
+			if(pr.waitFor()==0){
 
-			BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-			String line = "";
+				BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+				String line = "";
 		
-			while ((line=buf.readLine())!=null) {
-				output=output+"\n"+line;
+				while ((line=buf.readLine())!=null) {
+					output=output+"\n"+line;
+				}
 			}
+			else{
+
+				BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getErrorStream()));
+				String line = "";
+		
+				while ((line=buf.readLine())!=null) {
+					output=output+"\n"+line;
+				}
+			}
+			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -62,7 +73,8 @@ public class RootChecker extends Activity {
 
 	//Checks for root and returns a description of the result	
 	public String rootCheck(){
-		String result,packages;
+		String result,roSecureResult="",packages,roSecure,binSu,xbinSu,sbinSu,xbinSudo;
+		int roSecureInt;
 		boolean isSuperSUInstalled, isSuperUserInstalled;
 		
 	/*	//Get a list of packages to check if superuser or superSU apps. are installed
@@ -78,8 +90,21 @@ public class RootChecker extends Activity {
 		else
 			isSuperSUInstalled = false;
 		*/
+		roSecure=runCommand("getprop ro.secure");
+		roSecure=roSecure.replaceAll("\n", "");
+		roSecureInt=Integer.parseInt(roSecure);
+		if(roSecureInt==1)
+			roSecureResult="1) The value of ro.secure is set to: " + roSecure + "\nThis means that the adb shell won't run commands as a root user on your device. The ro.secure property is set at boot time from the default.prop file in the root directory.";
+		else if(roSecureInt==0)
+			roSecureResult="1) The value of ro.secure is set to: " + roSecure + "\nThis means that the adb shell will run commands as a root user on your device. The ro.secure property is set at boot time from the default.prop file in the root directory.";	
 		
 		
+		binSu=runCommand("ls -l /system/bin/su");
+		xbinSu=runCommand("ls -l /system/xbin/su");
+		sbinSu=runCommand("ls -l /sbin/su");
+		xbinSudo=runCommand("ls -l /system/xbin/sudo");
+		
+		result=roSecureResult + "\n\n" + binSu + "\n" + xbinSu + "\n" + xbinSudo + "\n" + sbinSu;
 		Log.d("TEST_MESSAGES",result);
 			
 		return result;
